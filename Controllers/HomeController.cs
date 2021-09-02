@@ -20,6 +20,7 @@ namespace ValidationApp.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 
