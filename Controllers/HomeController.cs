@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,18 @@ namespace ValidationApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IStringLocalizer<HomeController> _localizer;
+        private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
+        //public HomeController(ILogger<HomeController> logger)
+        //{
+        //    _logger = logger;
+        //}
+        public HomeController(IStringLocalizer<HomeController> localizer,
+                  IStringLocalizer<SharedResource> sharedLocalizer)
         {
-            _logger = logger;
+            _localizer = localizer;
+            _sharedLocalizer = sharedLocalizer;
         }
-
         public IActionResult Index()
         {
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace ValidationApp.Controllers
 {
     public class AccountsController : Controller
     {
+        private readonly IStringLocalizer<AccountsController> _localizer;
+        private readonly IStringLocalizer<SharedResource> _sharedLocalizer;
         // GET: AccountsController
         List<string> test = new List<string>();
         //public ActionResult Index()
@@ -19,7 +22,10 @@ namespace ValidationApp.Controllers
         {
             return View();
         }
-
+        public IActionResult Registration()
+        {
+            return View();
+        }
 
 
         [AcceptVerbs("Get", "Post")]

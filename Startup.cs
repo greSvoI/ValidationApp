@@ -1,14 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Globalization;
 using ValidationApp.Data;
 
 namespace ValidationApp
@@ -25,8 +22,29 @@ namespace ValidationApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            //services.AddControllersWithViews();
 
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddControllersWithViews()
+                .AddDataAnnotationsLocalization(options => {
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                        factory.Create(typeof(SharedResource));
+                })
+                .AddViewLocalization();
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en"),
+                   
+                    new CultureInfo("ru")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture("en");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DataBase>(options =>
@@ -49,10 +67,22 @@ namespace ValidationApp
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            
+           // var supportedCultures = new[]
+           //{
+                
+           //      new CultureInfo("en"),
+           //      new CultureInfo("ru"),
+           //  };
+           // app.UseRequestLocalization(new RequestLocalizationOptions
+           // {
+           //     DefaultRequestCulture = new RequestCulture("ru"),
+           //     SupportedCultures = supportedCultures,
+           //     SupportedUICultures = supportedCultures
+           // });
+
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace ValidationApp.Data
 {
     public class DataBase:DbContext
@@ -12,5 +13,6 @@ namespace ValidationApp.Data
         {
 
         }
+        //public DbSet<Registration> UserRegistration { get; set; }
     }
 }

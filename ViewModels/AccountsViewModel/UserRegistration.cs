@@ -7,16 +7,18 @@ using System.Threading.Tasks;
 
 namespace ValidationApp.Models
 {
-    public class UserAccounts
+    public class UserRegistration
     {
         public string Id { get; set; }
-
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Длина строки должна быть от 3 до 50 символов")]
-        [Display(Name = "Имя")]
+      
+        [Required(ErrorMessage = "ErrorName")]
+        [StringLength(50,  ErrorMessage = "ErrorName", MinimumLength = 3)]
+        [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Некорректный адрес")]
-        [Remote(action: "CheckEmail", controller: "Accounts", ErrorMessage = "Email уже используется")]
+        [Required]
+        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "ErrorMsgEmail")]
+        [Remote(action: "CheckEmail", controller: "Accounts", ErrorMessage = "ErrorMsgEmail")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -27,17 +29,14 @@ namespace ValidationApp.Models
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Пароль")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [Required]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         [DataType(DataType.Password)]
-        [Display(Name = "Подтвердить пароль")]
+        [Display(Name = "PasswordConfirm")]
         public string PasswordConfirm { get; set; }
 
-        public bool RememberMe { get; set; }
-
-        public string ReturnUrl { get; set; }
     }
 }
